@@ -1,0 +1,25 @@
+[general]
+creator=R package 'raster'
+created=2018-07-20 10:47:23
+[georeference]
+nrows=7083
+ncols=2916
+xmin=-726190
+ymin=-16450
+xmax=-667870
+ymax=125210
+projection=+proj=lcc +lat_1=35 +lat_2=65 +lat_0=52 +lon_0=10 +a=6370000 +b=6370000
+[data]
+datatype=FLT4S
+byteorder=little
+nbands=2
+bandorder=BIL
+minvalue=1.14299583435059:0.983663976192474
+maxvalue=3.31945490837097:7.33883619308472
+nodatavalue=-3.4e+38
+[legend]
+legendtype=
+values=
+color=
+[description]
+layername=relative_pm25:relative_no2
