@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-*.grd
-*.gri
+.grd
+.gri
