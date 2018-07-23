@@ -47,7 +47,7 @@ example_areas             <- as(eng_scot_wales[eng_scot_wales$name %in% c('Leice
 uk_air_quality_index      <- crop(uk_air_quality_index, example_areas)
 uk_air_quality_index      <- mask(uk_air_quality_index, example_areas)
 
-writeRaster(uk_air_quality_index, filename="uk_air_quality_index.grd", overwrite=TRUE)
+writeRaster(uk_air_quality_index, filename="results/uk_air_quality_index.grd", overwrite=TRUE)
 
 
 
