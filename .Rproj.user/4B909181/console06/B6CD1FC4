@@ -1,42 +1,0 @@
-]0;/home/james/github/uk_cmaq_air_quality_index]0;james@UbuntuSandbox: ~/github/uk_cmaq_air_quality_index[01;32mjames@UbuntuSandbox[00m:[01;34m~/github/uk_cmaq_air_quality_index[00m$ scp james@10.0.4.225/mnt/modelling2/UKmaps20m/* .
-cp: cannot stat 'james@10.0.4.225/mnt/modelling2/UKmaps20m/*': No such file or directory
-]0;/home/james/github/uk_cmaq_air_quality_index]0;james@UbuntuSandbox: ~/github/uk_cmaq_air_quality_index[01;32mjames@UbuntuSandbox[00m:[01;34m~/github/uk_cmaq_air_quality_index[00m$ scp james@10.0.4.225/mnt/modelling2/UKmaps20m/* .[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kssh james@10.0.4.225
-The authenticity of host '10.0.4.225 (10.0.4.225)' can't be established.
-RSA key fingerprint is SHA256:7sT8nXsGg5VGeIAuUoXRnUiISzzY7OQlGcpGoaYaUXE.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '10.0.4.225' (RSA) to the list of known hosts.
-james@10.0.4.225's password: 
-Last login: Wed May 16 11:17:14 2018 from 10.0.4.240
-"Platform HPC" 3.0 (build 5604) Management Node
-]0;james@cluster2:~[james@cluster2 ~]$ sudo    sshpass
--bash: sshpass: command not found
-]0;james@cluster2:~[james@cluster2 ~]$ apt install           exit
-logout
-[H[2JConnection to 10.0.4.225 closed.
-]0;/home/james/github/uk_cmaq_air_quality_index]0;james@UbuntuSandbox: ~/github/uk_cmaq_air_quality_index[01;32mjames@UbuntuSandbox[00m:[01;34m~/github/uk_cmaq_air_quality_index[00m$ apt[K[K[Ksudo apt-[K [K-get install sshpass
-[sudo] password for james: 
-Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
-Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
-Reading state information... 0%Reading state information... 0%Reading state information... Done
-The following packages were automatically installed and are no longer required:
-  libgdal1i libjasper-dev linux-headers-4.4.0-119 linux-headers-4.4.0-119-generic linux-headers-4.4.0-121 linux-headers-4.4.0-121-generic linux-headers-4.4.0-124 linux-headers-4.4.0-124-generic
-  linux-headers-4.4.0-127 linux-headers-4.4.0-127-generic linux-headers-4.4.0-31 linux-headers-4.4.0-31-generic linux-image-4.4.0-119-generic linux-image-4.4.0-121-generic
-  linux-image-4.4.0-124-generic linux-image-4.4.0-127-generic linux-image-4.4.0-31-generic linux-image-extra-4.4.0-119-generic linux-image-extra-4.4.0-121-generic
-  linux-image-extra-4.4.0-124-generic linux-image-extra-4.4.0-127-generic linux-image-extra-4.4.0-31-generic ubuntu-core-launcher
-Use 'sudo apt autoremove' to remove them.
-The following NEW packages will be installed
-  sshpass
-0 to upgrade, 1 to newly install, 0 to remove and 54 not to upgrade.
-Need to get 10.5 kB of archives.
-After this operation, 56.3 kB of additional disk space will be used.
-0% [Working]            Get:1 http://gb.archive.ubuntu.com/ubuntu xenial/universe amd64 sshpass amd64 1.05-1 [10.5 kB]
-19% [1 sshpass 2,455 B/10.5 kB 23%]                                   100% [Working]              Fetched 10.5 kB in 0s (584 kB/s)
-Selecting previously unselected package sshpass.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 398710 files and directories currently installed.)
-Preparing to unpack .../sshpass_1.05-1_amd64.deb ...
-Unpacking sshpass (1.05-1) ...
-Processing triggers for man-db (2.7.5-1) ...
-Setting up sshpass (1.05-1) ...
-]0;/home/james/github/uk_cmaq_air_quality_index]0;james@UbuntuSandbox: ~/github/uk_cmaq_air_quality_index[01;32mjames@UbuntuSandbox[00m:[01;34m~/github/uk_cmaq_air_quality_index[00m$ sshpass -f "../cluster2password.txt" scp james@10.0.4.225/mnt/modelling2/UKmaps20m/* .
-cp: cannot stat 'james@10.0.4.225/mnt/modelling2/UKmaps20m/*': No such file or directory
-]0;/home/james/github/uk_cmaq_air_quality_index]0;james@UbuntuSandbox: ~/github/uk_cmaq_air_quality_index[01;32mjames@UbuntuSandbox[00m:[01;34m~/github/uk_cmaq_air_quality_index[00m$ sshpass -f "../cluster2password.txt" scp james@10.0.4.225/mnt/modelling2/UKmaps20m/* .[1@:[1@:[1P
