@@ -103,22 +103,51 @@ pm25_westminster_1km              <- aggregate(pm25_westminster, fact = 50, meth
 
 ## Make outputs
 
-writeRaster(pm25_leicester,        filename="results/pm25_leicester.grd", overwrite=TRUE)
-writeRaster(pm25_westminster,      filename="results/pm25_westminster.grd", overwrite=TRUE)
+writeRaster(pm25_leicester,        filename="gis_results/pm25_leicester", overwrite=TRUE, format='EHdr')
+writeRaster(pm25_westminster,      filename="gis_results/pm25_westminster", overwrite=TRUE, format='EHdr')
 
-writeRaster(no2_leicester,         filename="results/no2_leicester.grd", overwrite=TRUE)
-writeRaster(no2_westminster,       filename="results/no2_westminster.grd", overwrite=TRUE)
+writeRaster(no2_leicester,         filename="gis_results/no2_leicester", overwrite=TRUE, format='EHdr')
+writeRaster(no2_westminster,       filename="gis_results/no2_westminster", overwrite=TRUE, format='EHdr')
 
-writeRaster(pm25_leicester_1km,    filename="results/pm25_leicester_1km.grd", overwrite=TRUE)
-writeRaster(pm25_westminster_1km,  filename="results/pm25_westminster_1km.grd", overwrite=TRUE)
+writeRaster(pm25_leicester_1km,    filename="gis_results/pm25_leicester_1km", overwrite=TRUE, format='EHdr')
+writeRaster(pm25_westminster_1km,  filename="gis_results/pm25_westminster_1km", overwrite=TRUE, format='EHdr')
 
-writeRaster(no2_leicester_1km,     filename="results/no2_leicester_1km.grd", overwrite=TRUE)
-writeRaster(no2_westminster_1km,   filename="results/no2_westminster_1km.grd", overwrite=TRUE)
+writeRaster(no2_leicester_1km,     filename="gis_results/no2_leicester_1km", overwrite=TRUE, format='EHdr')
+writeRaster(no2_westminster_1km,   filename="gis_results/no2_westminster_1km", overwrite=TRUE, format='EHdr')
 
-writeRaster(pm25_westminster_laei,   filename="results/pm25_westminster_laei.grd", overwrite=TRUE)
+writeRaster(pm25_westminster_laei,   filename="gis_results/pm25_westminster_laei", overwrite=TRUE, format='EHdr')
 
-## Zip up examples
-system("zip -r air_quality_index_examples.zip results")
+## Make PNG outputs
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+
+no2_laei2013_breaks  <- c(cellStats(no2_leicester$no2, stat=min)-1,
+                          format(round(quantile(no2_leicester$no2, seq(0,1,length.out = 15)),4), scientific=F),
+                          cellStats(no2_leicester$no2, stat=min)+1) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                    no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+levelplot(no2_leicester$no2,
+          maxpixels = no2_leicester$no2@ncols/2 * no2_leicester$no2@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+
 
 
 
