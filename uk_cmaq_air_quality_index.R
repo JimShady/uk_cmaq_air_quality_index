@@ -91,7 +91,7 @@ rm(london)
 pm25_westminster_laei          <- crop(pm25_2013, westminster)
 pm25_westminster_laei         <- mask(pm25_westminster_laei, westminster)
 no2_westminster_laei          <- crop(no2_2013,  westminster)
-no2_westminster_laei          <- mask(pm25_westminster_laei,  westminster)
+no2_westminster_laei          <- mask(no2_westminster_laei,  westminster)
 
 ## Make 1km versions of these rasters
 
@@ -116,21 +116,158 @@ writeRaster(no2_leicester_1km,     filename="gis_results/no2_leicester_1km", ove
 writeRaster(no2_westminster_1km,   filename="gis_results/no2_westminster_1km", overwrite=TRUE, format='EHdr')
 
 writeRaster(pm25_westminster_laei,   filename="gis_results/pm25_westminster_laei", overwrite=TRUE, format='EHdr')
+writeRaster(no2_westminster_laei,   filename="gis_results/no2_westminster_laei", overwrite=TRUE, format='EHdr')
 
 ## Make PNG outputs
 
 #no2_colours
 source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
 
-no2_laei2013_breaks  <- c(cellStats(no2_leicester$no2, stat=min)-1,
-                          format(round(quantile(no2_leicester$no2, seq(0,1,length.out = 15)),4), scientific=F),
-                          cellStats(no2_leicester$no2, stat=min)+1) #17
+#######################################################
+############################################SECTION 1
+
+pm25_leicester <- raster('gis_results/pm25_leicester', band=1)
+
+##pm25 liec concs
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester[[1]], stat=min)-1,4),format(round(quantile(pm25_leicester[[1]], seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester[[1]], stat=max)+1,4)) #17
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_leicester_concs.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_leicester[[1]],
+          maxpixels = pm25_leicester[[1]]@ncols/2 * pm25_leicester[[1]]@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+##pm25 leic local rank
+
+pm25_leicester <- raster('gis_results/pm25_leicester', band=2)
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,4),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,4)) #17
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_leicester_local.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_leicester,
+          maxpixels = pm25_leicester@ncols/2 * pm25_leicester@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+##pm25 leic country rank
+
+pm25_leicester <- raster('gis_results/pm25_leicester', band=3)
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,4),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,4)) #17
+
+#no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_leicester_country.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_leicester,
+          maxpixels = pm25_leicester@ncols/2 * pm25_leicester@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+#######################################################################
+##################### SECTION TWO
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
+
+##no2 liec concs
+
+no2_leicester <- raster('gis_results/no2_leicester', band=1)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester[[1]], stat=min)-1,4),format(round(quantile(no2_leicester[[1]], seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester[[1]], stat=max)+1,4))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
-                                    no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
 
-levelplot(no2_leicester$no2,
-          maxpixels = no2_leicester$no2@ncols/2 * no2_leicester$no2@nrows/2,
+png('png_outputs/no2_leicester_concs.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_leicester[[1]],
+          maxpixels = no2_leicester[[1]]@ncols/2 * no2_leicester[[1]]@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+##no2 leic local rank
+
+no2_leicester <- raster('gis_results/no2_leicester', band=2)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,4),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester, stat=max)+1,4))) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_leicester_local.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_leicester,
+          maxpixels = no2_leicester@ncols/2 * no2_leicester@nrows/2,
           margin = FALSE,
           colorkey = list(
             at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
@@ -147,17 +284,350 @@ levelplot(no2_leicester$no2,
           col.regions = no2_laei2013_colours,
           at = no2_laei2013_breaks)
 
+dev.off()
+
+##no2 leic country rank
+
+no2_leicester <- raster('gis_results/no2_leicester', band=3)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,4),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester, stat=max)+1,4))) #17
+
+#no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_leicester_country.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_leicester,
+          maxpixels = no2_leicester@ncols/2 * no2_leicester@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+#######################################################################
+##################### SECTION THREE
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
+
+##no2 liec concs
+
+no2_westminster <- raster('gis_results/no2_westminster', band=1)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster[[1]], stat=min)-1,4),format(round(quantile(no2_westminster[[1]], seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster[[1]], stat=max)+1,4))) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                    no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_westminster_concs.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_westminster[[1]],
+          maxpixels = no2_westminster[[1]]@ncols/2 * no2_westminster[[1]]@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+##no2 leic local rank
+
+no2_westminster <- raster('gis_results/no2_westminster', band=2)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,4),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster, stat=max)+1,4))) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                    no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_westminster_local.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_westminster,
+          maxpixels = no2_westminster@ncols/2 * no2_westminster@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+##no2 leic country rank
+
+no2_westminster <- raster('gis_results/no2_westminster', band=3)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,4),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster, stat=max)+1,4))) #17
+
+#no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                    no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_westminster_country.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_westminster,
+          maxpixels = no2_westminster@ncols/2 * no2_westminster@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = 17), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+#######################################################################
+##################### SECTION FOUR
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
+
+##pm25 liec concs
+
+pm25_westminster <- raster('gis_results/pm25_westminster', band=1)
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster[[1]], stat=min)-1,4),format(round(quantile(pm25_westminster[[1]], seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster[[1]], stat=max)+1,4))) #17
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_westminster_concs.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_westminster[[1]],
+          maxpixels = pm25_westminster[[1]]@ncols/2 * pm25_westminster[[1]]@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+##pm25 leic local rank
+
+pm25_westminster <- raster('gis_results/pm25_westminster', band=2)
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,4),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,4))) #17
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_westminster_local.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_westminster,
+          maxpixels = pm25_westminster@ncols/2 * pm25_westminster@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+##pm25 leic country rank
+
+pm25_westminster <- raster('gis_results/pm25_westminster', band=3)
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,4),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,4))) #17
+
+#pm25_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                    pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_westminster_country.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_westminster,
+          maxpixels = pm25_westminster@ncols/2 * pm25_westminster@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
 
 
+#######################################################################
+##################### SECTION FIVE
 
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
 
+##pm25 liec concs
 
+pm25_westminster_laei <- raster('gis_results/pm25_westminster_laei')
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_laei, stat=min)-1,4),format(round(quantile(pm25_westminster_laei, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster_laei, stat=max)+1,4))) #17
 
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
 
+png('png_outputs/pm25_westminster_laei.png', width = 10, height = 8, units = 'in', res = 300)
 
+levelplot(pm25_westminster_laei,
+          maxpixels = pm25_westminster_laei@ncols/2 * pm25_westminster_laei@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
 
+dev.off()
 
+#######################################################################
+##################### SECTION SIX
 
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
 
+##pm25 liec concs
 
-                               
+pm25_westminster_1km <- raster('gis_results/pm25_westminster_1km')
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_1km, stat=min)-1,4),format(round(quantile(pm25_westminster_1km, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster_1km, stat=max)+1,4))) #17
+
+pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
+                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/pm25_westminster_1km.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(pm25_westminster_1km,
+          #maxpixels = pm25_westminster_1km@ncols/2 * pm25_westminster_1km@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(pm25_laei2013_breaks), max(pm25_laei2013_breaks), length = length(pm25_laei2013_breaks)), 
+                          labels = paste(" \n \n ",pm25_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = pm25_laei2013_colours,
+          at = pm25_laei2013_breaks)
+
+dev.off()
+
+######################################################################
+##################### SECTION SEVEN
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
+
+##pm25 liec concs
+
+no2_westminster_1km <- raster('gis_results/no2_westminster_1km')
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_1km, stat=min)-1,4),format(round(quantile(no2_westminster_1km, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster_1km, stat=max)+1,4))) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_westminster_1km.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_westminster_1km,
+          #maxpixels = pm25_westminster_1km@ncols/2 * pm25_westminster_1km@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
+
+dev.off()
+
+### Remove files from folder that are big
+system('rm *.gri')
+system('rm *.grd')
