@@ -9,16 +9,18 @@ library(ggplot2)
 library(sf)
 library(rmarkdown)
 
+setwd('/home/james/github/uk_cmaq_air_quality_index')
+
 ## Copy maps over from cluster2
-system('sshpass -f "../cluster2password.txt" scp james@10.0.4.225:/mnt/modelling2/UKmaps20m/* .')
+system('sshpass -f "../cluster2password.txt" scp james@10.0.4.225:/mnt/modelling2/UKmaps20m/* cmaq_runs/')
 
 latlong                   <- "+init=epsg:4326"
 ukgrid                    <- "+init=epsg:27700"
 google                    <- "+init=epsg:3857"
 
 ## read in the raster files and UK shapefile
-pm25                      <- raster('Annual_CMAQUrban_PM25_2012.grd')
-no2                       <- raster('Annual_CMAQUrban_NO2_2012.grd')
+pm25                      <- raster('cmaq_runs/Annual_CMAQUrban_PM25_2012.grd')
+no2                       <- raster('cmaq_runs/Annual_CMAQUrban_NO2_2012.grd')
 eng_scot_wales            <- st_read('https://raw.githubusercontent.com/JimShady/useful_geography/master/eng_scot_wales.geojson')
 
 ## Convert to same crs as the raster files. Just use pm25 one, could have used no2 instead.
@@ -551,6 +553,43 @@ levelplot(pm25_westminster_laei,
           scales = list(draw = FALSE),
           col.regions = pm25_laei2013_colours,
           at = pm25_laei2013_breaks)
+
+dev.off()
+
+#######################################################################
+##################### SECTION SIX
+
+#no2_colours
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/no2_laei2013_colours_breaks.R')
+source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_laei2013_colours_breaks.R')
+
+##no2 liec concs
+
+no2_westminster_laei <- raster('gis_results/no2_westminster_laei')
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_laei, stat=min)-1,4),format(round(quantile(no2_westminster_laei, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster_laei, stat=max)+1,4))) #17
+
+no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
+                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
+
+png('png_outputs/no2_westminster_laei.png', width = 10, height = 8, units = 'in', res = 300)
+
+levelplot(no2_westminster_laei,
+          maxpixels = no2_westminster_laei@ncols/2 * no2_westminster_laei@nrows/2,
+          margin = FALSE,
+          colorkey = list(
+            at = seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)),
+            space = 'right',
+            labels = list(at=seq(min(no2_laei2013_breaks), max(no2_laei2013_breaks), length = length(no2_laei2013_breaks)), 
+                          labels = paste(" \n \n ",no2_laei2013_labels), 
+                          font = 1,
+                          cex = 1.5)
+          ),
+          par.settings = list(
+            axis.line =list( col = 'transparent')
+          ),
+          scales = list(draw = FALSE),
+          col.regions = no2_laei2013_colours,
+          at = no2_laei2013_breaks)
 
 dev.off()
 
