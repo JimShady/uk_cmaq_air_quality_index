@@ -8,6 +8,7 @@ library(rgeos)
 library(ggplot2)
 library(sf)
 library(rmarkdown)
+library(rastervis)
 
 
 ## Copy maps over from cluster2
@@ -154,7 +155,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 pm25_leicester <- raster('gis_results/pm25_leicester', band=1)
 
 ##pm25 liec concs
-pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester[[1]], stat=min)-1,4),format(round(quantile(pm25_leicester[[1]], seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester[[1]], stat=max)+1,4)) #17
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester[[1]], stat=min)-1,2),format(round(quantile(pm25_leicester[[1]], seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_leicester[[1]], stat=max)+1,2)) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -184,7 +185,7 @@ dev.off()
 ##pm25 leic local rank
 
 pm25_leicester <- raster('gis_results/pm25_leicester', band=2)
-pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,4),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,4)) #17
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,3),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),3), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,3)) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -214,7 +215,7 @@ dev.off()
 ##pm25 leic country rank
 
 pm25_leicester <- raster('gis_results/pm25_leicester', band=3)
-pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,4),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,4)) #17
+pm25_laei2013_breaks  <- c(round(cellStats(pm25_leicester, stat=min)-1,3),format(round(quantile(pm25_leicester, seq(0,1,length.out = 10)),3), scientific=F), round(cellStats(pm25_leicester, stat=max)+1,3)) #17
 
 #no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
 
@@ -252,8 +253,8 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 
 ##no2 liec concs
 
-no2_leicester <- raster('gis_results/no2_leicester', band=1)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester[[1]], stat=min)-1,4),format(round(quantile(no2_leicester[[1]], seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester[[1]], stat=max)+1,4))) #17
+no2_leicester <- raster('gis_results/no2_leiceste', band=1)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester[[1]], stat=min)-1,2),format(round(quantile(no2_leicester[[1]], seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_leicester[[1]], stat=max)+1,2))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                      no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
@@ -282,8 +283,8 @@ dev.off()
 
 ##no2 leic local rank
 
-no2_leicester <- raster('gis_results/no2_leicester', band=2)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,4),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester, stat=max)+1,4))) #17
+no2_leicester <- raster('gis_results/no2_leiceste', band=2)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,3),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),3), scientific=F), round(cellStats(no2_leicester, stat=max)+1,3))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                      no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
@@ -312,8 +313,8 @@ dev.off()
 
 ##no2 leic country rank
 
-no2_leicester <- raster('gis_results/no2_leicester', band=3)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,4),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_leicester, stat=max)+1,4))) #17
+no2_leicester <- raster('gis_results/no2_leiceste', band=3)
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_leicester, stat=min)-1,3),format(round(quantile(no2_leicester, seq(0,1,length.out = 15)),3), scientific=F), round(cellStats(no2_leicester, stat=max)+1,3))) #17
 
 #no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
 
@@ -352,7 +353,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##no2 liec concs
 
 no2_westminster <- raster('gis_results/no2_westminster', band=1)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster[[1]], stat=min)-1,4),format(round(quantile(no2_westminster[[1]], seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster[[1]], stat=max)+1,4))) #17
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster[[1]], stat=min)-1,2),format(round(quantile(no2_westminster[[1]], seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_westminster[[1]], stat=max)+1,2))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
@@ -382,7 +383,7 @@ dev.off()
 ##no2 leic local rank
 
 no2_westminster <- raster('gis_results/no2_westminster', band=2)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,4),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster, stat=max)+1,4))) #17
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,2),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_westminster, stat=max)+1,2))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                     no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
@@ -412,7 +413,7 @@ dev.off()
 ##no2 leic country rank
 
 no2_westminster <- raster('gis_results/no2_westminster', band=3)
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,4),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster, stat=max)+1,4))) #17
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster, stat=min)-1,2),format(round(quantile(no2_westminster, seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_westminster, stat=max)+1,2))) #17
 
 #no2_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
 
@@ -451,7 +452,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##pm25 liec concs
 
 pm25_westminster <- raster('gis_results/pm25_westminster', band=1)
-pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster[[1]], stat=min)-1,4),format(round(quantile(pm25_westminster[[1]], seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster[[1]], stat=max)+1,4))) #17
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster[[1]], stat=min)-1,2),format(round(quantile(pm25_westminster[[1]], seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_westminster[[1]], stat=max)+1,2))) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -481,7 +482,7 @@ dev.off()
 ##pm25 leic local rank
 
 pm25_westminster <- raster('gis_results/pm25_westminster', band=2)
-pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,4),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,4))) #17
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,2),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,2))) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                     pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -511,7 +512,7 @@ dev.off()
 ##pm25 leic country rank
 
 pm25_westminster <- raster('gis_results/pm25_westminster', band=3)
-pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,4),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,4))) #17
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster, stat=min)-1,2),format(round(quantile(pm25_westminster, seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_westminster, stat=max)+1,2))) #17
 
 #pm25_laei2013_colours <- c("#064AF4", "#0C95E9", "#19CFD2", "#82FDCF", "#68DE85", "#A4EB50", "#FFFF80", "#FFD600", #"#FFAD5B", "#F97C00") #16 (one less above)
 
@@ -551,7 +552,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##pm25 liec concs
 
 pm25_westminster_laei <- raster('gis_results/pm25_westminster_laei')
-pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_laei, stat=min)-1,4),format(round(quantile(pm25_westminster_laei, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster_laei, stat=max)+1,4))) #17
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_laei, stat=min)-1,2),format(round(quantile(pm25_westminster_laei, seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_westminster_laei, stat=max)+1,2))) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                      pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -588,7 +589,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##no2 liec concs
 
 no2_westminster_laei <- raster('gis_results/no2_westminster_laei')
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_laei, stat=min)-1,4),format(round(quantile(no2_westminster_laei, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster_laei, stat=max)+1,4))) #17
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_laei, stat=min)-1,2),format(round(quantile(no2_westminster_laei, seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_westminster_laei, stat=max)+1,2))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                      no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
@@ -625,7 +626,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##pm25 liec concs
 
 pm25_westminster_1km <- raster('gis_results/pm25_westminster_1km')
-pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_1km, stat=min)-1,4),format(round(quantile(pm25_westminster_1km, seq(0,1,length.out = 10)),4), scientific=F), round(cellStats(pm25_westminster_1km, stat=max)+1,4))) #17
+pm25_laei2013_breaks  <- as.numeric(c(round(cellStats(pm25_westminster_1km, stat=min)-1,2),format(round(quantile(pm25_westminster_1km, seq(0,1,length.out = 10)),2), scientific=F), round(cellStats(pm25_westminster_1km, stat=max)+1,2))) #17
 
 pm25_laei2013_labels  <- c("", paste(pm25_laei2013_breaks[1:length(pm25_laei2013_breaks)-1], "-", 
                                      pm25_laei2013_breaks[2:length(pm25_laei2013_breaks)])) #17 (same as breaks)
@@ -662,7 +663,7 @@ source('https://raw.githubusercontent.com/KCL-ERG/colour_schemes/master/pm25_lae
 ##pm25 liec concs
 
 no2_westminster_1km <- raster('gis_results/no2_westminster_1km')
-no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_1km, stat=min)-1,4),format(round(quantile(no2_westminster_1km, seq(0,1,length.out = 15)),4), scientific=F), round(cellStats(no2_westminster_1km, stat=max)+1,4))) #17
+no2_laei2013_breaks  <- as.numeric(c(round(cellStats(no2_westminster_1km, stat=min)-1,2),format(round(quantile(no2_westminster_1km, seq(0,1,length.out = 15)),2), scientific=F), round(cellStats(no2_westminster_1km, stat=max)+1,2))) #17
 
 no2_laei2013_labels  <- c("", paste(no2_laei2013_breaks[1:length(no2_laei2013_breaks)-1], "-", 
                                      no2_laei2013_breaks[2:length(no2_laei2013_breaks)])) #17 (same as breaks)
