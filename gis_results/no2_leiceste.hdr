@@ -1,0 +1,14 @@
+BYTEORDER      I
+LAYOUT         BIL
+NROWS          499
+NCOLS          401
+NBANDS         3
+NBITS          32
+BANDROWBYTES   1604
+TOTALROWBYTES  4812
+PIXELTYPE      FLOAT
+ULXMAP         -726180
+ULYMAP         125200
+XDIM           20
+YDIM           20
+NODATA         -3.4e+38
